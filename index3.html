@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La chica de las flores | Catálogo de Flores </title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FAF6F0',
+                            card: '#FFFBF7',
+                            pink: '#F8C3CD',
+                            pinkLight: '#FDE8ED',
+                            pinkDark: '#E08B9B',
+                            accent: '#D96B81',
+                            textDark: '#2C2224',
+                            textMuted: '#7A6B6E',
+                            black: '#1A1113'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .brand { display:flex; align-items:center; gap:10px; min-width:205px; }
+        .brand img { width:47px; height:47px; border-radius:50%; object-fit:cover; border:2px solid #e8d6da; background:#fff; }
+        .brand-name { font-family:var(--site-font-heading); font-size:24px; letter-spacing:-.7px; line-height:1; }
+        .brand-name small { display:block; font-family:var(--site-font-body); font-size:9px; letter-spacing:2.8px; text-transform:uppercase; margin-top:6px; color:#8e777e; }
+        .clip-oval {
+            border-radius: 999px 999px 120px 120px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #FAF6F0;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #F8C3CD;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-textDark font-sans antialiased selection:bg-brand-pinkLight selection:text-brand-accent overflow-x-hidden">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md transition-all duration-300 border-b border-pink-100/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group brand">
+                <img src="flores/cflo.jpg" alt="Ilustración floral de la marca">
+                <span class="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-brand-textDark group-hover:text-brand-accent transition-colors">
+                    La chica de las <span class="italic font-normal text-brand-accent">Flores</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#hero" class="text-brand-accent font-semibold transition-colors">Inicio</a>
+                <a href="#about" class="text-brand-textMuted hover:text-brand-accent transition-colors">Nosotros</a>
+                <a href="#shop" class="text-brand-textMuted hover:text-brand-accent transition-colors">Catálogo</a>
+                <a href="#categories" class="text-brand-textMuted hover:text-brand-accent transition-colors">Categorías</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4 sm:gap-6">
+                <!-- Search Button -->
+                <button onclick="toggleSearchModal()" class="p-2 text-brand-textDark hover:text-brand-accent transition-colors rounded-full hover:bg-brand-pinkLight/50" aria-label="Buscar">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartModal()" class="relative p-2 text-brand-textDark hover:text-brand-accent transition-colors rounded-full hover:bg-brand-pinkLight/50" aria-label="Carrito">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-accent text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-brand-bg transition-transform scale-100">0</span>
+                </button>
+
+                <!-- Mobile Menu Toggle Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-brand-textDark hover:text-brand-accent transition-colors rounded-lg">
+                    <i id="menu-icon" class="fa-solid fa-bars-staggered text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-bg border-b border-pink-100 px-4 pt-2 pb-6 space-y-3 transition-all duration-300">
+            <a href="#hero" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-accent bg-brand-pinkLight/40">Inicio</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-textDark hover:bg-brand-pinkLight/30">Nosotros</a>
+            <a href="#shop" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-textDark hover:bg-brand-pinkLight/30">Catálogo</a>
+            <a href="#categories" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-textDark hover:bg-brand-pinkLight/30">Categorías</a>
+            
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative overflow-hidden pt-6 pb-16 lg:py-20">
+        <!-- Floating Social Media Sidebar (Desktop) -->
+        <div class="hidden lg:flex flex-col items-center gap-6 absolute right-8 top-1/3 z-10 text-xs tracking-widest text-brand-textMuted uppercase font-semibold">
+            <span class="rotate-90 origin-right translate-x-3 mb-8 text-brand-accent">SOCIAL</span>
+            <div class="w-px h-10 bg-brand-pink"></div>
+            <a href="https://www.facebook.com/share/19iy7TMrpu/"  target="_blank" class="hover:text-brand-accent transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+            <a href="https://www.instagram.com/lachicadelasflores_manta?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==" target="_blank" class="hover:text-brand-accent transition-colors"><i class="fa-brands fa-instagram text-sm"></i></a>
+            <a href="https://wa.me/593939475473" target="_blank" class="hover:text-brand-accent transition-colors"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Content Column -->
+                <div class="lg:col-span-7 flex flex-col justify-center">
+                    
+                    <!-- Step Indicator -->
+                    <div class="flex items-center gap-6 mb-8 text-sm text-brand-textMuted">
+                        <span class="text-brand-accent font-bold font-serif text-lg border-b-2 border-brand-accent pb-1">01</span>
+                        <span class="opacity-40">02</span>
+                        <span class="opacity-40">03</span>
+                        <span class="opacity-40">04</span>
+                    </div>
+
+                    <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-light text-brand-textDark leading-[1.1] mb-6">
+                        Colección <br>
+                        <span class="italic font-normal text-brand-accent">Exclusiva</span> de <br>
+                        Flores Frescas
+                    </h1>
+
+                    <p class="text-brand-textMuted text-base sm:text-lg max-w-lg mb-8 leading-relaxed">
+                    Cada ramo que sale de La Chica de las Flores está hecho con amor, dedicación y un toque de magia.
+                    Rosas, lirios y detalles que convierten cualquier momento en un recuerdo inolvidable.
+                    ✨ Porque siempre hay una forma bonita de decir “te quiero”
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#shop" class="inline-flex items-center gap-3 bg-brand-black text-white px-8 py-4 rounded-full font-medium hover:bg-brand-accent transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                            <span>Explorar Flores</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="https://www.instagram.com/p/Dbb7aHluyuf/" class="inline-flex items-center gap-2 px-6 py-4 rounded-full font-medium text-brand-textDark hover:text-brand-accent transition-colors">
+                            <i class="fa-regular fa-circle-play text-xl text-brand-accent"></i>
+                            <span>Ver Video</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Visual Column -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <!-- Background Soft Pink Blob/Oval -->
+                    <div class="absolute w-[85%] h-[95%] bg-brand-pinkLight rounded-[180px] -rotate-6 top-4 -z-10"></div>
+                    
+                    <!-- Oval Framed Image Container -->
+                    <div class="relative w-full max-w-md h-[460px] sm:h-[520px] rounded-[180px] overflow-hidden border-8 border-white shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
+                        <img src="/flores/otros.png" 
+                             alt="Ramo de Tulipanes Rosados" 
+                             class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Floating Badge -->
+                    <div class="absolute bottom-6 -left-4 sm:left-2 glass-panel p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-white/60 animate-bounce" style="animation-duration: 4s;">
+                        <div class="w-10 h-10 rounded-full bg-brand-pinkLight flex items-center justify-center text-brand-accent">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-brand-textMuted font-medium">Frescura Garantizada</p>
+                            <p class="text-sm font-bold text-brand-textDark">100% Orgánicas</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS COUNTER SECTION -->
+    <section class="py-12 bg-white/70 border-y border-pink-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-pink-100">
+                <div class="p-4">
+                    <!-- <h3 class="font-serif text-3xl sm:text-4xl font-bold text-brand-textDark mb-1">
+                        <span class="counter" data-target="3000">0</span>+
+                    </h3> -->
+                    <p class="text-xs sm:text-sm text-brand-textMuted uppercase tracking-wider font-semibold">Flores Frescas</p>
+                </div>
+                <div class="p-4">
+                    <!-- <h3 class="font-serif text-3xl sm:text-4xl font-bold text-brand-textDark mb-1">
+                        <span class="counter" data-target="5000">0</span>+
+                    </h3> -->
+                    <p class="text-xs sm:text-sm text-brand-textMuted uppercase tracking-wider font-semibold">Ramos Lindos</p>
+                </div>
+                <div class="p-4">
+                        <!-- <h3 class="font-serif text-3xl sm:text-4xl font-bold text-brand-textDark mb-1">
+                            <span class="counter" data-target="700">0</span>+
+                        </h3> -->
+                    <p class="text-xs sm:text-sm text-brand-textMuted uppercase tracking-wider font-semibold">Clientes Felices</p>
+                </div>
+                <div class="p-4">
+                    <!-- <h3 class="font-serif text-3xl sm:text-4xl font-bold text-brand-textDark mb-1">
+                        <span class="counter" data-target="15">0</span>+
+                    </h3> -->
+                    <p class="text-xs sm:text-sm text-brand-textMuted uppercase tracking-wider font-semibold">Detalles hechos con amor</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT / "FIND YOUR PERFECT BOUQUET" SECTION -->
+    <section id="about" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text -->
+                <div class="lg:col-span-5">
+                    <span class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-2 block">Diseños Exclusivos</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-light text-brand-textDark mb-6 leading-tight">
+                        Encuentra Tu <br>
+                        <span class="italic text-brand-accent font-normal">Ramo de Flores</span> Perfecto
+                    </h2>
+                    <p class="text-brand-textMuted text-base mb-6 leading-relaxed">
+                        Las flores como obsequio transmiten empatía e interés sincero hacia la salud y felicidad de quien las recibe. Elaboramos composiciones florales con tulipanes rosas, gerberas, santinis y astromelias seleccionadas a mano día a día.
+                    </p>
+                    <button onclick="showModalInfo('Atención Personalizada', 'Ofrecemos asesoría gratuita para elegir el arreglo ideal para tu evento o persona especial. Contáctanos por WhatsApp al +593 939 475 473.')" 
+                            class="px-7 py-3 rounded-full border border-brand-accent text-brand-accent font-medium hover:bg-brand-accent hover:text-white transition-all duration-300">
+                        Saber Más
+                    </button>
+                </div>
+
+                <!-- Right Image Layout Masonry Grid -->
+                <div class="lg:col-span-7 grid grid-cols-2 gap-4 sm:gap-6">
+                    <div class="space-y-4 sm:space-y-6">
+                        <div class="overflow-hidden rounded-3xl shadow-md h-48 sm:h-60 group">
+                            <img src="/flores/x.png" 
+                                 alt="Flores Rosadas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="overflow-hidden rounded-3xl shadow-md h-56 sm:h-72 group">
+                            <img src="/flores/x2.png" 
+                                 alt="Florero con Tulipan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                    </div>
+                    <div class="pt-8">
+                        <div class="overflow-hidden rounded-3xl shadow-md h-80 sm:h-96 group">
+                            <img src="https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?q=80&w=800&auto=format&fit=crop" 
+                                 alt="Arreglo Envuelto Elegante" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOP / BEST SELLERS CATALOG SECTION -->
+    <section id="shop" class="py-16 bg-white/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-accent text-xs font-bold tracking-widest uppercase block mb-2">Destacados de la Semana</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-light text-brand-textDark">
+                        Nuestros <span class="italic font-normal text-brand-accent">Más Vendidos</span>
+                    </h2>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="catalog-filters">
+                    <button onclick="filterProducts('all')" class="filter-btn active-filter px-5 py-2 rounded-full text-sm font-medium transition-all bg-brand-accent text-white shadow-md">Todos</button>
+                    <button onclick="filterProducts('bouquets')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all bg-white text-brand-textMuted hover:bg-brand-pinkLight">Ramos</button>
+                    <button onclick="filterProducts('roses')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all bg-white text-brand-textMuted hover:bg-brand-pinkLight">Rosas</button>
+                    <button onclick="filterProducts('tulips')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all bg-white text-brand-textMuted hover:bg-brand-pinkLight">Tulipanes</button>
+                    <button onclick="filterProducts('Otros')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition-all bg-white text-brand-textMuted hover:bg-brand-pinkLight">Otros</button>
+
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Products rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR CATEGORIES SECTION -->
+    <section id="categories" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-10">
+                <h2 class="font-serif text-4xl sm:text-5xl font-light text-brand-textDark">
+                    Categorías <span class="italic text-brand-accent font-normal">Populares</span>
+                </h2>
+                <a href="#shop" class="text-xs font-bold uppercase tracking-widest text-brand-accent hover:underline flex items-center gap-2">
+                    Ver Todas <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Category Tabs Navigation Left -->
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <button onclick="switchCategoryTab('bouquets')" class="cat-tab active-cat flex items-center justify-between p-4 rounded-2xl transition-all duration-300 text-left bg-brand-pink text-white shadow-md font-semibold">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-spa"></i> Ramos de Flores
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+
+                    <button onclick="switchCategoryTab('romance')" class="cat-tab flex items-center justify-between p-4 rounded-2xl transition-all duration-300 text-left bg-white text-brand-textDark hover:bg-brand-pinkLight">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-heart"></i> Romance & Aniversarios
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0"></i>
+                    </button>
+
+                    <button onclick="switchCategoryTab('summer')" class="cat-tab flex items-center justify-between p-4 rounded-2xl transition-all duration-300 text-left bg-white text-brand-textDark hover:bg-brand-pinkLight">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-sun"></i> Colección Verano
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0"></i>
+                    </button>
+
+                    <button onclick="switchCategoryTab('wedding')" class="cat-tab flex items-center justify-between p-4 rounded-2xl transition-all duration-300 text-left bg-white text-brand-textDark hover:bg-brand-pinkLight">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-gem"></i> Bodas & Eventos
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0"></i>
+                    </button>
+
+                    <button onclick="switchCategoryTab('mother')" class="cat-tab flex items-center justify-between p-4 rounded-2xl transition-all duration-300 text-left bg-white text-brand-textDark hover:bg-brand-pinkLight">
+                        <span class="flex items-center gap-3">
+                            <i class="fa-solid fa-gift"></i> Día de la Madre
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0"></i>
+                    </button>
+                </div>
+
+                <!-- Category Content Display Right -->
+                <div class="lg:col-span-8">
+                    <div id="category-display" class="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
+                        <!-- Content updated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- NEWSLETTER SECTION -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-pinkLight rounded-3xl p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                
+                <div class="max-w-md z-10">
+                    <span class="text-brand-accent text-xs font-bold tracking-widest uppercase block mb-2">Descuentos Exclusivos</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-brand-textDark mb-4">
+                        Suscríbete a Nuestro <span class="italic font-normal text-brand-accent">Boletín</span>
+                    </h3>
+                    <p class="text-brand-textMuted text-sm mb-6">
+                        Recibe un 15% de descuento en tu primera compra y entérate de nuevas colecciones florales de temporada.
+                    </p>
+
+                    <form onsubmit="handleNewsletter(event)" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" required placeholder="Tu correo electrónico..." 
+                               class="px-5 py-3.5 rounded-full bg-white text-sm text-brand-textDark placeholder-brand-textMuted/60 outline-none focus:ring-2 focus:ring-brand-accent flex-grow">
+                        <button type="submit" class="bg-brand-accent text-white px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-brand-textDark transition-colors shadow-md">
+                            Suscribirme
+                        </button>
+                    </form>
+                </div>
+
+                <div class="w-full md:w-auto flex justify-center z-10">
+                    <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1527061011665-3652c757a4d4?q=80&w=600&auto=format&fit=crop" 
+                             alt="Mujer con flores" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <!-- Decorative Circles Background -->
+                <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-brand-pink/30 rounded-full blur-2xl"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-textDark text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+                
+                <div class="lg:col-span-2">
+                    <a href="#" class="font-serif text-3xl font-bold tracking-tight text-white mb-4 block">
+                        La chica de las <span class="italic font-normal text-brand-pink">Flores</span>
+                    </a>
+                    <p class="text-white/60 text-sm max-w-sm mb-6 leading-relaxed">
+                        Creamos experiencias florales memorables entregando belleza, frescura y elegancia directamente en tu puerta.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/19iy7TMrpu/" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-accent transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                        <a href="https://www.instagram.com/lachicadelasflores_manta/" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-accent transition-colors"><i class="fa-brands fa-instagram text-sm"></i></a>
+                    <a href="https://wa.me/593939475473" target="_blank" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-accent transition-colors"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-lg font-semibold mb-4 text-brand-pink">Información</h4>
+                    <ul class="space-y-2.5 text-sm text-white/60">
+                        <li><a href="#" class="hover:text-white transition-colors">Sobre Nosotros</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contacto</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Términos & Condiciones</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-lg font-semibold mb-4 text-brand-pink">Categorías</h4>
+                    <ul class="space-y-2.5 text-sm text-white/60">
+                        <li><a href="#shop" class="hover:text-white transition-colors">Ramos Dulces</a></li>
+                        <li><a href="#shop" class="hover:text-white transition-colors">Tulipanes Silvestres</a></li>
+                        <li><a href="#shop" class="hover:text-white transition-colors">Rosas de Lujo</a></li>
+                        <li><a href="#shop" class="hover:text-white transition-colors">Cajas Florales</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-serif text-lg font-semibold mb-4 text-brand-pink">Horario</h4>
+                    <p class="text-sm text-white/60 leading-relaxed mb-2">
+                        Lunes - Sábado:<br> 08:00 AM - 07:00 PM
+                    </p>
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Domingos:<br> 09:00 AM - 02:00 PM
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="pt-8 text-center text-xs text-white/40">
+                &copy; 2026 La chica de las Flores. Todos los derechos reservados. Diseñado con elegancia.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SLIDE-OVER SHOPPING CART MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleCartModal()"></div>
+
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div class="pointer-events-auto w-screen max-w-md bg-brand-bg shadow-2xl flex flex-col">
+                
+                <!-- Cart Header -->
+                <div class="p-6 bg-white border-b border-pink-100 flex items-center justify-between">
+                    <h2 class="font-serif text-2xl font-bold text-brand-textDark flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brand-accent"></i> Tu Carrito
+                    </h2>
+                    <button onclick="toggleCartModal()" class="text-brand-textMuted hover:text-brand-accent transition-colors p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+                    <!-- Dynamic cart items will be injected here -->
+                </div>
+
+                <!-- Cart Footer / Total -->
+                <div class="p-6 bg-white border-t border-pink-100 space-y-4">
+                    <div class="flex items-center justify-between text-base font-medium text-brand-textDark">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold text-lg text-brand-accent">$0.00</span>
+                    </div>
+                    <p class="text-xs text-brand-textMuted">Los impuestos y gastos de envío se calculan en el pago.</p>
+                    <button onclick="checkoutCart()" class="w-full bg-brand-accent text-white py-3.5 rounded-full font-semibold hover:bg-brand-textDark transition-colors shadow-lg">
+                        Finalizar Compra
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-xs" onclick="toggleSearchModal()"></div>
+        <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-xl z-10 space-y-4 border border-pink-100">
+            <div class="flex items-center gap-3 border-b border-pink-100 pb-3">
+                <i class="fa-solid fa-magnifying-glass text-brand-accent text-lg"></i>
+                <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Buscar tulipanes, rosas, orquídeas..." class="w-full text-base outline-none text-brand-textDark">
+                <button onclick="toggleSearchModal()" class="text-brand-textMuted hover:text-brand-accent">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="search-results" class="max-h-60 overflow-y-auto space-y-2 custom-scrollbar">
+                <p class="text-xs text-brand-textMuted text-center py-4">Escribe algo para empezar a buscar...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERIC INFO MODAL -->
+    <div id="info-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden">
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-xs" onclick="closeModalInfo()"></div>
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full z-10 text-center space-y-4 shadow-2xl border border-pink-100">
+        <div class="w-14 h-14 bg-brand-pinkLight text-brand-accent rounded-full flex items-center justify-center mx-auto text-2xl">
+            <i class="fa-solid fa-flower-tulip"></i>
+        </div>
+        <h3 id="info-title" class="font-serif text-2xl font-bold text-brand-textDark"></h3>
+        <p id="info-body" class="text-sm text-brand-textMuted leading-relaxed"></p>
+        
+        <!-- Botón modificado para abrir WhatsApp y cerrar el modal a la vez -->
+        <button onclick="window.open('https://wa.me/593939475473?text=¡Hola!%20Vengo%20de%20la%20web%20y%20deseo%20más%20información%20o%20asesoría.', '_blank'); closeModalInfo();" class="w-full bg-brand-accent text-white py-3 rounded-full font-semibold hover:bg-brand-textDark transition-colors inline-flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-lg"></i> Ir a WhatsApp
+        </button>
+    </div>
+</div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Catalog Products Data
+        const products = [
+            {
+                id: 1,
+                name: "Lirios rosado",
+                category: "bouquets",
+                price: 28.33,
+                rating: 5.0,
+                image: "/flores/lirios.png",
+                tag: "Más Vendido"
+            },
+            {
+                id: 2,
+                name: "Ramo Gerberas Primavera",
+                category: "bouquets",
+                price: 32.50,
+                rating: 4.8,
+                image: "/flores/gerberas.png",
+                tag: "Tendencia"
+            },
+            {
+                id: 3,
+                name: "Bouquet Silvestre Rosé",
+                category: "bouquets",
+                price: 39.99,
+                rating: 4.9,
+                image: "/flores/tulipanes.png",
+                tag: "Destacado"
+            },
+            {
+                id: 4,
+                name: "Ramo Lirios & Gerberas Deluxe",
+                category: "bouquets",
+                price: 45.00,
+                rating: 5.0,
+                image: "/flores/cata.png",
+                tag: "Exclusivo"
+            },
+            {
+                id: 5,
+                name: "Ramo de Lirios",
+                category: "bouquets",
+                price: 29.00,
+                rating: 4.7,
+                image: "/flores/otros.png",
+                tag: "Oferta"
+            },
+            {
+                id: 6,
+                name: "Ramo Blanco y Rojo",
+                category: "bouquets",
+                price: 34.00,
+                rating: 4.8,
+                image: "/flores/cattt.png",
+                tag: "Nuevo"
+            },
+            {
+                id: 7,
+                name: "Ramo de Gerberas Clásico",
+                category: "roses",
+                price: 48.00,
+                rating: 5.0,
+                image: "/flores/rosas.png",
+                tag: "Clásico"
+            },
+            {
+                id: 8,
+                name: "Ramo Multicolor (Girasoles, Hortensias y Orquídeas)",
+                category: "bouquets",
+                price: 36.80,
+                rating: 4.9,
+                image: "/flores/x2.png",
+                tag: "Popular"
+            },
+            {
+                "id": 9,
+                "name": "Bouquet Sol de Oro con Peluche",
+                "category": "Otros",
+                "price": 36.80,
+                "rating": 4.9,
+                "image": "/flores/amar2.png",
+                "tag": "Temporada"
+            },
+            {
+                "id": 10,
+                "name": "Ramo Gigante Girasoles Sol Radiante",
+                "category": "Otros",
+                "price": 38.50,
+                "rating": 4.9,
+                "image": "/flores/amari.png",
+                "tag": "Temporada"
+            },
+            {
+                "id": 11,
+                "name": "Bouquet Atardecer Dorado (Girasoles y Rosas)",
+                "category": "Otros",
+                "price": 39.00,
+                "rating": 4.9,
+                "image": "/flores/amarilla.png",
+                "tag": "Temporada"
+            }
+        ];
+
+        // Category Content Data
+        const categoryDetails = {
+            bouquets: [
+                { title: "Ramos Románticos", img: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=600&auto=format&fit=crop", desc: "Diseñados para enamorar y crear recuerdos inolvidables." },
+                { title: "Ramos Minimalistas", img: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=600&auto=format&fit=crop", desc: "Sencillez sofisticada con un toque de color único." }
+            ],
+            romance: [
+                { title: "Cajas Corazón de Rosas", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop", desc: "Perfectas para aniversarios y propuestas románticas." },
+                { title: "Arreglos Noche de Cita", img: "https://images.unsplash.com/photo-1559563458-527698bf5295?q=80&w=600&auto=format&fit=crop", desc: "Detalles apasionados y refinados." }
+            ],
+            summer: [
+                { title: "Girasoles & Silvestres", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?q=80&w=600&auto=format&fit=crop", desc: "Brillo radiante y energía cálida de verano." },
+                { title: "Pasteles de Verano", img: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?q=80&w=600&auto=format&fit=crop", desc: "Tonos suaves y alegres para iluminar el día." }
+            ],
+            wedding: [
+                { title: "Ramos de Novia", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?q=80&w=600&auto=format&fit=crop", desc: "Elegancia pura para el día más especial." },
+                { title: "Centros de Mesa", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?q=80&w=600&auto=format&fit=crop", desc: "Ambientación botánica de alta clase." }
+            ],
+            mother: [
+                { title: "Especial Mamá", img: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?q=80&w=600&auto=format&fit=crop", desc: "Flores llenas de ternura y gratitud." },
+                { title: "Orquídeas Premium", img: "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=600&auto=format&fit=crop", desc: "Belleza duradera y sofisticada." }
+            ]
+        };
+
+        
+        // Cart State
+        let cart = [];
+        let favorites = [];
+        // pagi 
+        let currentPage = 1;
+        const itemsPerPage = 8;
+        let currentFilteredProducts = products;
+        // DOM Loaded Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            switchCategoryTab('bouquets');
+            initCounterAnimation();
+        });
+
+        // Render Products Grid
+        function renderProducts(productsToRender) {
+            // Actualizamos el filtro actual si nos pasan uno nuevo
+            if (productsToRender) {
+                currentFilteredProducts = productsToRender;
+            }
+
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+
+            // Calculamos usando currentFilteredProducts
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = currentFilteredProducts.slice(startIndex, endIndex);
+
+            if (currentFilteredProducts.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-brand-textMuted py-8">No se encontraron productos en esta categoría.</p>`;
+                removePaginationUI();
+                return;
+            }
+
+            grid.innerHTML = paginatedItems.map(p => `
+                <div class="bg-white rounded-3xl p-4 border border-pink-100 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                    <div class="relative h-64 rounded-2xl overflow-hidden mb-4 bg-pink-50">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-brand-textDark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">${p.tag}</span>
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand-textDark hover:bg-white transition-colors shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1 text-amber-400 text-xs mb-1">
+                            <i class="fa-solid fa-star"></i>
+                            <span class="font-bold text-brand-textDark">${p.rating}</span>
+                        </div>
+                        <h3 class="font-serif text-lg font-semibold text-brand-textDark mb-2 leading-snug">${p.name}</h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="font-serif text-xl font-bold text-brand-textDark">$${p.price.toFixed(2)}</span>
+                            <button onclick="addToCart(${p.id})" class="w-10 h-10 rounded-full bg-pink-50 text-brand-accent flex items-center justify-center hover:bg-brand-accent hover:text-white transition-colors">
+                                <i class="fa-solid fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            renderPaginationControls(currentFilteredProducts.length);
+        }   
+        // Función para generar los botones de página
+        function renderPaginationControls(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            
+            // Si hay 20 productos o menos, no mostramos paginación
+            if (totalPages <= 1) {
+                removePaginationUI();
+                return;
+            }
+
+            let paginationContainer = document.getElementById('pagination-container');
+            
+            // Si no existe el contenedor en el HTML, lo creamos dinámicamente debajo del grid de productos
+            if (!paginationContainer) {
+                paginationContainer = document.createElement('div');
+                paginationContainer.id = 'pagination-container';
+                paginationContainer.className = 'flex justify-center items-center gap-2 mt-12';
+                document.getElementById('products-grid').after(paginationContainer);
+            }
+
+            let buttonsHTML = `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-4 py-2 rounded-xl bg-white border border-pink-100 text-brand-textDark hover:bg-pink-50 transition-colors text-sm font-medium">
+                    <i class="fa-solid fa-chevron-left mr-1"></i> Anterior
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                buttonsHTML += `
+                    <button onclick="changePage(${i})" class="w-10 h-10 rounded-xl font-medium text-sm transition-colors ${currentPage === i ? 'bg-brand-pink text-white shadow-md' : 'bg-white border border-pink-100 text-brand-textDark hover:bg-pink-50'}">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            buttonsHTML += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-4 py-2 rounded-xl bg-white border border-pink-100 text-brand-textDark hover:bg-pink-50 transition-colors text-sm font-medium">
+                    Siguiente <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+            `;
+
+            paginationContainer.innerHTML = buttonsHTML;
+        }
+
+        // Función para cambiar de página
+        function changePage(newPage) {
+            const totalPages = Math.ceil(currentFilteredProducts.length / itemsPerPage);
+            if (newPage < 1 || newPage > totalPages) return;
+            
+            currentPage = newPage;
+            renderProducts(); // Renderiza usando el filtro actual
+            
+            const grid = document.getElementById('products-grid');
+            if (grid) {
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }   
+
+        // Función auxiliar para limpiar la paginación si hay pocos productos
+        function removePaginationUI() {
+            const paginationContainer = document.getElementById('pagination-container');
+            if (paginationContainer) {
+                paginationContainer.innerHTML = '';
+            }
+        }
+
+        function filterByCategory(category) {
+            currentPage = 1; // ¡Importante reiniciar a la página 1 al filtrar!
+            const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+            renderProducts(filtered);
+        }
+        // Filter Products
+        function filterProducts(category) {
+            // Update button styles
+            const buttons = document.querySelectorAll('#catalog-filters button');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-accent', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'text-brand-textMuted');
+            });
+
+            event.target.classList.remove('bg-white', 'text-brand-textMuted');
+            event.target.classList.add('bg-brand-accent', 'text-white', 'shadow-md');
+
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+      // Category Tab Switcher
+function switchCategoryTab(catKey) {
+    const tabs = document.querySelectorAll('.cat-tab');
+    
+    // Si no hay pestañas, salimos para evitar errores
+    if (tabs.length === 0) return;
+
+    tabs.forEach(tab => {
+        tab.classList.remove('bg-brand-pink', 'text-white', 'shadow-md');
+        tab.classList.add('bg-white', 'text-brand-textDark');
+        
+        const arrow = tab.querySelector('.fa-arrow-right');
+        if (arrow) {
+            arrow.classList.add('opacity-0');
+        }
+    });
+
+    // Seleccionamos el botón activo de forma segura
+    const activeBtn = (typeof event !== 'undefined' && event && event.currentTarget) ? event.currentTarget : tabs[0];
+    
+    // Verificamos que activeBtn exista y tenga classList antes de usarlo
+    if (activeBtn && activeBtn.classList) {
+        activeBtn.classList.remove('bg-white', 'text-brand-textDark');
+        activeBtn.classList.add('bg-brand-pink', 'text-white', 'shadow-md');
+        
+        const activeArrow = activeBtn.querySelector('.fa-arrow-right');
+        if (activeArrow) {
+            activeArrow.classList.remove('opacity-0');
+        }
+    }
+
+    const display = document.getElementById('category-display');
+    const items = categoryDetails[catKey] || categoryDetails['bouquets'];
+    
+    if (display) {
+        display.innerHTML = items.map(item => `
+            <div class="bg-white rounded-3xl overflow-hidden p-4 border border-pink-100 flex flex-col justify-between group shadow-sm hover:shadow-md transition-shadow">
+                <div class="h-48 rounded-2xl overflow-hidden mb-4">
+                    <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div>
+                    <h4 class="font-serif text-xl font-semibold text-brand-textDark mb-1">${item.title}</h4>
+                    <p class="text-xs text-brand-textMuted mb-4">${item.desc}</p>
+                    <a href="#shop" class="inline-flex items-center gap-2 text-xs font-bold text-brand-accent hover:underline uppercase">
+                        Ver Colección <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+        // Add Product to Cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`"${product.name}" agregado al carrito`);
+        }
+
+        // Favorite Toggle
+        function toggleFavorite(productId) {
+            const index = favorites.indexOf(productId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast("Eliminado de favoritos");
+            } else {
+                favorites.push(productId);
+                showToast("Añadido a tus favoritos ❤️");
+            }
+            renderProducts(products);
+        }
+
+        // Update Cart UI
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const subtotalEl = document.getElementById('cart-subtotal');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.textContent = totalCount;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-brand-textMuted">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-brand-pink"></i>
+                        <p class="text-sm">Tu carrito está vacío.</p>
+                    </div>
+                `;
+                subtotalEl.textContent = "$0.00";
+                return;
+            }
+
+            let subtotal = 0;
+            container.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                return `
+                    <div class="flex items-center gap-4 bg-white p-3 rounded-2xl border border-pink-100 shadow-sm">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-serif text-sm font-semibold text-brand-textDark">${item.name}</h4>
+                            <p class="text-xs text-brand-accent font-bold">$${item.price.toFixed(2)}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 rounded-full bg-brand-bg text-brand-textDark text-xs flex items-center justify-center hover:bg-brand-pinkLight">-</button>
+                                <span class="text-xs font-bold w-4 text-center">${item.quantity}</span>
+                                <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 rounded-full bg-brand-bg text-brand-textDark text-xs flex items-center justify-center hover:bg-brand-pinkLight">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-brand-textMuted hover:text-red-500 p-2">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        function changeQuantity(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                removeFromCart(id);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        // Toggle Cart Modal
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars-staggered text-xl";
+            } else {
+                icon.className = "fa-solid fa-xmark text-xl";
+            }
+        }
+
+        // Search Modal Functions
+        function toggleSearchModal() {
+            const modal = document.getElementById('search-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const resultsContainer = document.getElementById('search-results');
+
+            if (query.trim() === '') {
+                resultsContainer.innerHTML = '<p class="text-xs text-brand-textMuted text-center py-4">Escribe algo para empezar a buscar...</p>';
+                return;
+            }
+
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-xs text-brand-textMuted text-center py-4">No se encontraron productos.</p>';
+            } else {
+                resultsContainer.innerHTML = filtered.map(p => `
+                    <div onclick="toggleSearchModal(); addToCart(${p.id});" class="flex items-center gap-3 p-2 hover:bg-brand-pinkLight/40 rounded-xl cursor-pointer transition-colors">
+                        <img src="${p.image}" class="w-10 h-10 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-brand-textDark">${p.name}</p>
+                            <p class="text-xs text-brand-accent font-bold">$${p.price.toFixed(2)}</p>
+                        </div>
+                        <i class="fa-solid fa-plus text-brand-accent text-xs"></i>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Generic Info Modal
+        function showModalInfo(title, body) {
+            document.getElementById('info-title').textContent = title;
+            document.getElementById('info-body').textContent = body;
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+
+        function closeModalInfo() {
+            document.getElementById('info-modal').classList.add('hidden');
+        }
+
+        // Checkout Cart
+        function checkoutCart() {
+            if (cart.length === 0) {
+                showToast("Tu carrito está vacío");
+                return;
+            }
+
+            // Tu número de WhatsApp configurado
+            const phoneNumber = "593939475473"; 
+
+            // Construir el mensaje con los detalles del carrito
+            let message = "¡Hola! 🌸 Quisiera realizar el siguiente pedido desde la web:\n\n";
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                const quantity = item.quantity || 1;
+                const subtotal = item.price * quantity;
+                total += subtotal;
+                
+                message += `${index + 1}. *${item.name}* (Cantidad: ${quantity}) - $${subtotal.toFixed(2)}\n`;
+            });
+
+            message += `\n*Total a pagar: $${total.toFixed(2)}*\n\nPor favor, confírmenme para coordinar el pago y el envío. ¡Muchas gracias!`;
+
+            // Codificar el mensaje para la URL de WhatsApp
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            // Abrir WhatsApp en una pestaña nueva
+            window.open(whatsappURL, '_blank');
+
+            // Limpiar el carrito y notificar al usuario
+            toggleCartModal();
+            showModalInfo("¡Pedido generado!", "Te estamos redirigiendo a WhatsApp para finalizar tu compra con un asesor.");
+            cart = [];
+            updateCartUI();
+        }
+
+        // Newsletter Handler
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast("¡Suscripción exitosa! Revisa tu correo.");
+            e.target.reset();
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-brand-textDark text-white text-xs font-medium px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 pointer-events-auto transition-all duration-300 transform translate-y-4 opacity-0 border border-white/10";
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-brand-pink text-sm"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Animated Counters
+        function initCounterAnimation() {
+            const counters = document.querySelectorAll('.counter');
+            let animated = false;
+
+            window.addEventListener('scroll', () => {
+                const section = document.querySelector('.counter');
+                if (!section) return;
+
+                const position = section.getBoundingClientRect().top;
+                const screenHeight = window.innerHeight;
+
+                if (position < screenHeight && !animated) {
+                    animated = true;
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const speed = target / 50;
+
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 25);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
